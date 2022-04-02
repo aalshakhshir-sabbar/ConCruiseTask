@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import { AppService } from 'src/app.service';
+import { CustomerDTO } from 'src/models/customer';
 
 @Injectable()
 export class CustomerService {
@@ -20,9 +21,8 @@ export class CustomerService {
   }
 
 
-  async addCustomer(req: Request) {
+  async addCustomer(customer: CustomerDTO) {
     await this.getCustomers();
-    const customer: any = req.body;
     this.customers = [this.customers,  {
       id: +this.customers[this.customers.length -1].id + 1,
       fullName: customer.name,
@@ -33,9 +33,8 @@ export class CustomerService {
     return "created new customer"
   }
 
-  async editCustomer(req: Request, id: number) {
+  async editCustomer(@Body() customer: CustomerDTO, id: number) {
     await this.getCustomers();
-    const customer: any = req.body;
     this.customers = this.customers.map(i => {
       if (i.id === id)  {
         return {...customer, id}
