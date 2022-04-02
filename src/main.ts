@@ -10,10 +10,10 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-  .setTitle('Cats example')
-  .setDescription('The cats API description')
+  .setTitle('ConCruise api')
+  .setDescription('find customers and drivers easily')
   .setVersion('1.0')
-  .addTag('cats')
+  .addTag('ConCruise')
   .build();
 
 
