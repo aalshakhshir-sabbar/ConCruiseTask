@@ -9,4 +9,5 @@ export class IRide {
 
 export class Pointed extends IRide {
   points: number
+  driverName: string
 }

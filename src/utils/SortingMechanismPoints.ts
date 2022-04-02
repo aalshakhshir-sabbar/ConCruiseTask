@@ -1,14 +1,13 @@
 import { IRide, Pointed } from "src/models/ride"
 
-export const SortTrips = (customerTrips: IRide[], riderTrips: IRide[]) => {
-   let pointedArray: Pointed[]  = []
-   riderTrips.forEach((item, index) => {
-       if (customerTrips[index]?.id)
-        pointedArray.push({...item, points: getPointsMap(item, customerTrips[index])})
-   })
-   return pointedArray.sort((a: Pointed, b: Pointed) => {
+export const SortTrips = (customerTrips: IRide[], driverTrips: IRide[]) => {
+    let pointedArray: Pointed[] = []
+    customerTrips.forEach((item, index) => {
+        pointedArray.push({ ...item, points: getPointsMap(item, driverTrips[index]), driverName: driverTrips[index].name })
+    })
+    return pointedArray.sort((a: Pointed, b: Pointed) => {
         return b.points - a.points;
-   })
+    })
 }
 
 
@@ -18,7 +17,7 @@ const getPointsMap = (trip1: IRide, trip2: IRide) => {
         rating: trip1.rating >= trip2.rating ? 2 : 0,
         numberOfRides: trip1.numberOfRides <= 2 && trip2.numberOfRides >= 3 ? 5 : trip1.numberOfRides > 2 && trip2.numberOfRides < 3 ? 2 : 0
     }
-    const totalPoints = Object.values(Obj).reduce((acc: number, i:number) => {
+    const totalPoints = Object.values(Obj).reduce((acc: number, i: number) => {
         return acc + i;
     }, 0)
 

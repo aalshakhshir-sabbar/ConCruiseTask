@@ -6,8 +6,12 @@ import { Pointed } from './models/ride';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get('/match')
   getBestRides() {
     return this.appService.getBestRides();
+  }
+  @Get('/failed')
+  getFailedRides() {
+    return this.appService.getFailedRides();
   }
 }

@@ -22,6 +22,15 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## cli usage:
+
+after installation of all modules using yarn
+
+List all customers/drivers npx nestjs-command customers OR npx nestjs-command drivers
+
+for help npx nestjs-command
+for exit npx nestjs-command exit
+
 ## Test
 
 ```bash

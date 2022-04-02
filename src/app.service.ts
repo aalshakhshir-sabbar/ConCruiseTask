@@ -14,10 +14,8 @@ export class AppService {
   }
 
   async parse(): Promise<Pointed[]> {
-    const driversStream = fs.createReadStream(driversDummy)
-
-    const drivers: any = this.getDrivers();
-    const customers: any = this.getCustomers()
+    const drivers: any = await this.getDrivers();
+    const customers: any = await this.getCustomers()
 
     return SortTrips(customers, drivers)
   }
@@ -39,6 +37,12 @@ export class AppService {
       separator: ','
     })
     return customers.list;
+  }
+
+  getFailedRides() {
+    return this.parse().then(res => {
+      return res.filter(i => i?.points < 1)
+    })
   }
 
   getBestRides() {
