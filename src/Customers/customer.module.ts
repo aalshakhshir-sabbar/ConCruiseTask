@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { CsvModule } from 'nest-csv-parser';
 import { CommandModule } from 'nestjs-command';
 import { AppService } from 'src/app.service';
-import { CustomerCommand } from './customer.command';
 import { CustomerController } from './customer.controller';
 import { CustomerService } from './customer.service';
 

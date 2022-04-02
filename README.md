@@ -38,6 +38,35 @@ for exit npx nestjs-command exit
 $ npm run test
 
 
+
+## api testing examples
+
+POST localhost:3000/customers (Add) 
+dummy body {
+    "name": "abood",
+    "currentLocation": "amman",
+    "numberOfRides": 122,
+    "rating": "3"
+}
+GET localhost:3000/customers (get all)
+
+GET localhost:3000/customers/1 (by id)
+
+DELETE localhost:3000/customers/1 (delete one by id)
+POST localhost:3000/customers (delete more than one by ids)
+ body {
+    ids: [1,2]
+}
+
+PUT localhost:3000/customers/1 (Update) 
+dummy body {
+    "name": "abood",
+    "currentLocation": "amman",
+    "numberOfRides": 122,
+    "rating": "3"
+}
+
+
 ## Swagger
 
 swagger is running on /api prefix localhost:3000
@@ -48,6 +77,7 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
 
 ## Support
 
