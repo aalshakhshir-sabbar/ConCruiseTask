@@ -2,8 +2,10 @@ import { IRide, Pointed } from "src/models/ride"
 
 export const SortTrips = (customerTrips: IRide[], driverTrips: IRide[]) => {
     let pointedArray: Pointed[] = []
-    customerTrips.forEach((item, index) => {
-        pointedArray.push({ ...item, points: getPointsMap(item, driverTrips[index]), driverName: driverTrips[index].name })
+    customerTrips.forEach((item) => {
+        driverTrips.forEach((driver) => {
+            pointedArray.push({ ...item, points: getPointsMap(item, driver), driverName: driver.name })
+        })
     })
     return pointedArray.sort((a: Pointed, b: Pointed) => {
         return b.points - a.points;
