@@ -39,15 +39,12 @@ export class AppService {
     return customers.list;
   }
 
-  getFailedRides() {
-    return this.parse().then(res => {
-      return res.filter(i => i?.points < 1)
-    })
+  async getFailedRides() {
+     const result = await this.parse();
+      return result.filter(i => i?.points < 1)
   }
 
-  getBestRides() {
-    return this.parse().then((res: any[]) => {
-      return res;
-    })
+  async getBestRides() {
+   return await this.parse()
   }
 }
