@@ -28,25 +28,19 @@ export class CustomerService {
     return createdCustomer;
   }
 
-  async editCustomer(@Body() customer: CustomerDTO, id: number) {
-    const cust = await this.getCustomers();
-    this.customers = cust.map((i) => {
-      if (i.id === id) {
-        return { ...customer, id };
-      }
-      return i;
-    });
+  async editCustomer(@Body() customer: CustomerDTO, id: string) {
+    await this.customerModel.findOneAndUpdate({ _id: id }, customer);
     return 'updated customer with id: ' + id;
   }
   async deleteCustomer(id: number) {
-    this.customerModel.deleteOne({ _id: id})
+    this.customerModel.deleteOne({ _id: id });
     return 'deleted customer with id: ' + id;
   }
   async deleteCustomers(req: any) {
     this.customerModel.deleteMany({
       _id: {
         $in: req.ids,
-      }
-    })
+      },
+    });
   }
 }

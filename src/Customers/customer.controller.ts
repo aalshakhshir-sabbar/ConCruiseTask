@@ -3,14 +3,11 @@ import {
   Controller,
   Delete,
   Get,
-  Head,
   Header,
   HttpCode,
   Param,
   Post,
   Put,
-  Req,
-  Request,
 } from '@nestjs/common';
 import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { CustomerDTO } from 'src/models/customer';
