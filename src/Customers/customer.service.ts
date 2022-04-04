@@ -4,14 +4,12 @@ import { CustomerDTO } from 'src/models/customer';
 
 @Injectable()
 export class CustomerService {
-  customers: any = this.getCustomers()
+  customers: any = []
   constructor(private readonly appService: AppService) {
+    this.customers = this.appService.getCustomers();
   }
   async getCustomers() {
-    return this.appService.getCustomers().then(res => {
-      this.customers = res;
-      return res;
-    })
+    return this.customers;
   }
 
   async getCustomer(id: number) {
@@ -20,7 +18,6 @@ export class CustomerService {
 
 
   async addCustomer(customer: CustomerDTO) {
-    console.log("This", this.customers);
     this.customers = [this.customers,  {
       id: +this.customers[this.customers.length -1].id + 1,
       fullName: customer.name,
