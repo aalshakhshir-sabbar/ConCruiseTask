@@ -12,7 +12,6 @@ export class CustomerCommand {
   })
   async customers(
   ) {
-      console.log("HI")
       return this.customerSerivce.getCustomers();
   }
 }
