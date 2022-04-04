@@ -4,7 +4,7 @@ import { CustomerDTO } from 'src/models/customer';
 
 @Injectable()
 export class CustomerService {
-  customers: any = []
+  customers: any = this.appService.getCustomers();
   constructor(private readonly appService: AppService) {
     this.customers = this.appService.getCustomers();
   }
@@ -13,23 +13,26 @@ export class CustomerService {
   }
 
   async getCustomer(id: number) {
-   return this.customers;
+    const cust = await this.getCustomers()
+   return cust?.find(i => i?.id === id)
   }
 
 
   async addCustomer(customer: CustomerDTO) {
-    this.customers = [this.customers,  {
-      id: +this.customers[this.customers.length -1].id + 1,
+    const cust = await this.getCustomers()
+    this.customers = [cust,  {
+      id: +cust[cust?.length -1]?.id + 1,
       fullName: customer.name,
       currentLocation: customer.currentLocation,
       numberOfRides: customer.numberOfRides,
       rating: customer.rating
     }]
-    return "created new customer"
+    return "created new customer " + JSON.stringify(customer);
   }
 
   async editCustomer(@Body() customer: CustomerDTO, id: number) {
-    this.customers = this.customers.map(i => {
+    const cust = await this.getCustomers()
+    this.customers = cust.map(i => {
       if (i.id === id)  {
         return {...customer, id}
       }
@@ -38,13 +41,15 @@ export class CustomerService {
     return "updated customer with id: " + id;
   }
   async deleteCustomer(id: number) {
-    this.customers = this.customers.filter(i => i?.id !== id)
+    const cust = await this.getCustomers()
+    this.customers = cust.filter(i => i?.id !== id)
     return "deleted customer with id: " + id;
 
   }
   async deleteCustomers(req: any) {
+    const cust = await this.getCustomers()
     const ids: any = req.body.ids
-    this.customers = this.customers.filter(i => !ids.includes(i.id))
+    this.customers = cust?.filter(i => !ids.includes(i.id))
     return "deleted all customers with ids: " + ids;
   }
 }

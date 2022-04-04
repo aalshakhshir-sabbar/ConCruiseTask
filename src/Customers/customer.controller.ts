@@ -12,8 +12,8 @@ export class CustomerController {
   }
   @ApiParam({name: 'id'})
   @Get(':id')
-  getCustomerById() {
-    return this.customerService.getCustomers();
+  getCustomerById(@Param() params) {
+    return this.customerService.getCustomer(params.id);
   }
 
   @Post()
