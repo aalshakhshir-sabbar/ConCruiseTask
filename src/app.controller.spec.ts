@@ -578,6 +578,7 @@ const failed = [
     driverName: 'Jocelyne Benettini',
   },
 ];
+
 describe('AppController', () => {
   let appController: AppController;
 
@@ -596,7 +597,6 @@ describe('AppController', () => {
       expect(appController.getBestRides()).toEqual(matches);
     });
     it('should get all failed rides', async () => {
-      console.log("LOL", await appController.getFailedRides())
       expect(await appController.getFailedRides()).toEqual(failed);
     });
   });
