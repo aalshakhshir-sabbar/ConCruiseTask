@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Head, Header, HttpCode, Param, Post, Put, Req, Request } from '@nestjs/common';
-import { ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBody, ApiParam } from '@nestjs/swagger';
 import { CustomerDTO } from 'src/models/customer';
 import { CustomerService } from './customer.service';
 
