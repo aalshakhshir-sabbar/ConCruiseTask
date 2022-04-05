@@ -11,7 +11,9 @@ import { CustomerService } from './customer.service';
   imports: [
     CsvModule,
     CommandModule,
-    MongooseModule.forFeature([{ name: Customer.name, schema: CustomerSchema }]),
+    MongooseModule.forFeature([
+      { name: Customer.name, schema: CustomerSchema },
+    ]),
   ],
   controllers: [CustomerController],
   providers: [CustomerService, AppService],

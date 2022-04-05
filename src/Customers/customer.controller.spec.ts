@@ -19,13 +19,8 @@ describe('CustomerController', () => {
         {
           provide: 'CustomerModel',
           useValue: {
-            exec(){
-                return customers;
-            },
-            find() {
-              const exec = () => {
-                  return customers;
-              }
+            exec() {
+              return customers;
             },
             deleteOne() {
               return { success: true };

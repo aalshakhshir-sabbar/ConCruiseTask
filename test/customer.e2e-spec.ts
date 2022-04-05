@@ -7,7 +7,7 @@ import { AppModule } from '../src/app.module';
 
 describe('Customers', () => {
   let app: INestApplication;
-  let customerService = {};
+  const customerService = {};
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -26,7 +26,7 @@ describe('Customers', () => {
       .get('/customers')
       .expect(200)
       .then((res) => {
-        expect(res.body.length).toBeGreaterThanOrEqual(customers.length)
+        expect(res.body.length).toBeGreaterThanOrEqual(customers.length);
       });
   });
   it(`/GET customer by id`, () => {

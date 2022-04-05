@@ -8,9 +8,9 @@ export type CustomerDocument = Customer & Document;
 export class Customer {
   @Prop()
   id: ObjectId;
-  
+
   @Prop()
-  _id: ObjectId
+  _id: ObjectId;
 
   @Prop()
   name: string;

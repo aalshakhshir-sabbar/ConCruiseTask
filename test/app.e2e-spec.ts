@@ -1,13 +1,12 @@
 import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
-import { CustomerModule } from '../src/Customers/customer.module';
 import { INestApplication } from '@nestjs/common';
-import { customers, failed, matches } from '../src/utils/mockData';
+import { failed, matches } from '../src/utils/mockData';
 import { AppModule } from '../src/app.module';
 
 describe('App', () => {
   let app: INestApplication;
-  let appService = {};
+  const appService = {};
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -33,4 +32,4 @@ describe('App', () => {
       .expect(200)
       .expect(failed);
   });
-})
+});

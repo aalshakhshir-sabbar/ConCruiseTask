@@ -4,7 +4,6 @@ import { AppService } from 'src/app.service';
 import { CustomerDTO } from 'src/models/customer';
 import { Customer, CustomerDocument } from 'src/schemas/customer.schema';
 import { Model } from 'mongoose';
-import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class CustomerService {

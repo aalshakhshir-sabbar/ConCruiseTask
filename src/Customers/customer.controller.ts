@@ -7,7 +7,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   UseFilters,
@@ -17,7 +16,6 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
-import { ObjectId } from 'mongodb';
 import { CustomerDTO } from 'src/models/customer';
 import { Customer } from 'src/schemas/customer.schema';
 import { ExceptionsLoggerFilter } from 'src/utils/exceptionLogger.filter';
@@ -66,7 +64,7 @@ export class CustomerController {
   ) {
     return this.customerService.editCustomer(customer, id);
   }
-  
+
   @UseGuards(AuthGuard('jwt'))
   @ApiParam({ name: 'id' })
   @Delete(':id')
