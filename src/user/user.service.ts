@@ -41,7 +41,7 @@ export class UserService {
     delete sanitized['password'];
     return sanitized;
   }
-  // the new methods
+
   async findByPayload(payload: Payload) {
     const { email } = payload;
     return await this.userModel.findOne({ email });
