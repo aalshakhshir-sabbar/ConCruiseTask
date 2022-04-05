@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CsvParser } from 'nest-csv-parser';
-import fs from 'fs';
+const fs = require('fs')
 import { IRide, Pointed } from './models/ride';
 import { SortTrips } from './utils/SortingMechanismPoints';
 
