@@ -30,11 +30,11 @@ export class CustomerService {
 
   async editCustomer(@Body() customer: CustomerDTO, id: string) {
     await this.customerModel.findOneAndUpdate({ _id: id }, customer);
-    return 'updated customer with id: ' + id;
+    return { success: true };
   }
   async deleteCustomer(id: number) {
     this.customerModel.deleteOne({ _id: id });
-    return 'deleted customer with id: ' + id;
+    return { success: true }
   }
   async deleteCustomers(req: any) {
     this.customerModel.deleteMany({
@@ -42,5 +42,6 @@ export class CustomerService {
         $in: req.ids,
       },
     });
+    return { success: true }
   }
 }

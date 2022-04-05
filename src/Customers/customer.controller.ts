@@ -5,6 +5,7 @@ import {
   Get,
   Header,
   HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -29,7 +30,7 @@ export class CustomerController {
 
   @Post()
   @ApiBody({ description: 'body:json string' })
-  @HttpCode(201)
+  @HttpCode(HttpStatus.CREATED)
   @Header('Cache-Control', 'none')
   addCustomer(@Body() body: CustomerDTO): Promise<Customer> {
     return this.customerService.addCustomer(body);
@@ -37,7 +38,7 @@ export class CustomerController {
 
   @ApiParam({ name: 'id' })
   @Put(':id')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @Header('Cache-Control', 'none')
   editCustomer(@Body() customer: CustomerDTO, @Param() params) {
     const id = params.id;
@@ -46,14 +47,14 @@ export class CustomerController {
 
   @ApiParam({ name: 'id' })
   @Delete(':id')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @Header('Cache-Control', 'none')
   deleteCustomer(@Param() params) {
     return this.customerService.deleteCustomer(params.id);
   }
 
   @Post()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @Header('Cache-Control', 'none')
   deleteCustomers(@Body() customer: CustomerDTO) {
     return this.customerService.deleteCustomers(customer);
