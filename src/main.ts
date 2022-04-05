@@ -1,7 +1,10 @@
 #! /usr/bin/env node
-import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ExceptionsLoggerFilter } from './utils/exceptionLogger.filter';
+import { ValidationErrorFilter } from './utils/validation.error.filter';
 
 
 async function bootstrap() {
@@ -16,6 +19,9 @@ async function bootstrap() {
   .addTag('ConCruise')
   .build();
 
+  app.useGlobalPipes(new ValidationPipe());
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new ExceptionsLoggerFilter(httpAdapter), new ValidationErrorFilter())
 
 
   const document = SwaggerModule.createDocument(app, config);
