@@ -17,6 +17,7 @@ async function bootstrap() {
   .setDescription('find customers and drivers easily')
   .setVersion('1.0')
   .addTag('ConCruise')
+  .addBearerAuth()
   .build();
 
   app.useGlobalPipes(new ValidationPipe());
