@@ -8,6 +8,7 @@ export class AppController {
 
   @Get('/match')
   getBestRides() {
+    console.log("HI")
     return this.appService.getBestRides();
   }
   @Get('/failed')

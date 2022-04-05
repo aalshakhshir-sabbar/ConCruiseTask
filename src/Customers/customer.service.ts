@@ -1,55 +1,47 @@
 import { Body, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import { AppService } from 'src/app.service';
 import { CustomerDTO } from 'src/models/customer';
+import { Customer, CustomerDocument } from 'src/schemas/customer.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class CustomerService {
   customers: any = this.appService.getCustomers();
-  constructor(private readonly appService: AppService) {
+  constructor(
+    private readonly appService: AppService,
+    @InjectModel(Customer.name) private customerModel: Model<CustomerDocument>,
+  ) {
     this.customers = this.appService.getCustomers();
   }
-  async getCustomers() {
-    return this.customers;
+  async getCustomers(): Promise<Customer[]> {
+    return await this.customerModel.find().exec();
   }
 
-  async getCustomer(id: number) {
-    const cust = await this.getCustomers()
-   return cust?.find(i => i?.id === id)
+  async getCustomer(id: number): Promise<Customer[]> {
+    return await this.customerModel.find({ _id: id });
   }
 
-
-  async addCustomer(customer: CustomerDTO) {
-    const cust = await this.getCustomers()
-    this.customers = [cust,  {
-      id: +cust[cust?.length -1]?.id + 1,
-      fullName: customer.name,
-      currentLocation: customer.currentLocation,
-      numberOfRides: customer.numberOfRides,
-      rating: customer.rating
-    }]
-    return "created new customer " + JSON.stringify(customer);
+  async addCustomer(customer: CustomerDTO): Promise<Customer> {
+    const createdCustomer = new this.customerModel(customer);
+    createdCustomer.save();
+    return createdCustomer;
   }
 
-  async editCustomer(@Body() customer: CustomerDTO, id: number) {
-    const cust = await this.getCustomers()
-    this.customers = cust.map(i => {
-      if (i.id === id)  {
-        return {...customer, id}
-      }
-      return i;
-    })
-    return "updated customer with id: " + id;
+  async editCustomer(@Body() customer: CustomerDTO, id: string) {
+    await this.customerModel.findOneAndUpdate({ _id: id }, customer);
+    return { success: true };
   }
   async deleteCustomer(id: number) {
-    const cust = await this.getCustomers()
-    this.customers = cust.filter(i => i?.id !== id)
-    return "deleted customer with id: " + id;
-
+    this.customerModel.deleteOne({ _id: id });
+    return { success: true }
   }
   async deleteCustomers(req: any) {
-    const cust = await this.getCustomers()
-    const ids: any = req.body.ids
-    this.customers = cust?.filter(i => !ids.includes(i.id))
-    return "deleted all customers with ids: " + ids;
+    this.customerModel.deleteMany({
+      _id: {
+        $in: req.ids,
+      },
+    });
+    return { success: true }
   }
 }
