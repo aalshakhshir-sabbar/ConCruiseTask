@@ -1,24 +1,36 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { Test } from '@nestjs/testing';
+import { CustomerModule } from '../src/Customers/customer.module';
+import { INestApplication } from '@nestjs/common';
+import { customers, failed, matches } from '../src/utils/mockData';
+import { AppModule } from '../src/app.module';
 
-describe('AppController (e2e)', () => {
+describe('App', () => {
   let app: INestApplication;
+  let appService = {};
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(appService)
+      .useValue(appService)
+      .compile();
 
-    app = moduleFixture.createNestApplication();
+    app = moduleRef.createNestApplication();
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it(`/GET match`, () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/match')
       .expect(200)
-      .expect('Hello World!');
+      .expect(matches);
   });
-});
+  it(`/GET failed`, () => {
+    return request(app.getHttpServer())
+      .get('/failed')
+      .expect(200)
+      .expect(failed);
+  });
+})
