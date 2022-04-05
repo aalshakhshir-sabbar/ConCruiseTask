@@ -51,5 +51,9 @@ export class UserService {
         const { email } = payload;
         return await this.userModel.findOne({ email });
       }
+
+      async getAllUsers() {
+        return await this.userModel.find();
+      }
     
 }

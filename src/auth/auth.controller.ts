@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { User } from 'src/models/user';
 import { RegisterDTO } from 'src/user/register.dto';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
@@ -12,6 +12,11 @@ export class AuthController {
     private userService: UserService,
     private authService: AuthService,
   ) {}
+
+  @Get('users')
+  async getUsers(): Promise<User[]> {
+    return await this.userService.getAllUsers();
+  }
 
   @Post('register')
   async register(@Body() registerDTO: RegisterDTO) {
