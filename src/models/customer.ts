@@ -1,40 +1,30 @@
-import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsEmpty,
-  IsMongoId,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-} from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger"
+import {  IsEmpty, IsMongoId, IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { ObjectId } from "mongodb"
 
 export class CustomerDTO {
-  @IsEmpty()
-  @ApiProperty()
-  @IsMongoId()
-  id: string;
+    @IsString()
+    @ApiProperty()
+    @IsNotEmpty()
+    name: string
 
-  @IsString()
-  @ApiProperty()
-  @IsNotEmpty()
-  name: string;
+    @IsString()
+    @ApiProperty()
+    @IsNotEmpty()
+    fullName: string
+    
+    @IsString()
+    @ApiProperty()
+    @IsNotEmpty()
+    currentLocation: string
 
-  @IsString()
-  @ApiProperty()
-  @IsNotEmpty()
-  fullName: string;
+    @ApiProperty()
+    @IsNumber()
+    @IsNotEmpty()
+    numberOfRides: number
 
-  @IsString()
-  @ApiProperty()
-  @IsNotEmpty()
-  currentLocation: string;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsNotEmpty()
-  numberOfRides: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  @ApiProperty()
-  rating: number;
+    @IsNotEmpty()
+    @IsNumber()
+    @ApiProperty()
+    rating: number
 }

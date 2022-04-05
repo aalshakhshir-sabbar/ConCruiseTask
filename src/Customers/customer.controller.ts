@@ -44,7 +44,6 @@ export class CustomerController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @UsePipes(new ValidationPipe())
-  @UseFilters(ExceptionsLoggerFilter)
   @ApiBody({ description: 'body:json string' })
   @HttpCode(HttpStatus.CREATED)
   @Header('Cache-Control', 'none')

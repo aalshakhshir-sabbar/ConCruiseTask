@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { User } from 'src/models/user';
 import { RegisterDTO } from 'src/user/register.dto';
 import { UserService } from 'src/user/user.service';
@@ -16,7 +16,8 @@ export class AuthController {
   async getUsers(): Promise<User[]> {
     return await this.userService.getAllUsers();
   }
-
+  
+  @HttpCode(HttpStatus.CREATED)
   @Post('register')
   async register(@Body() registerDTO: RegisterDTO) {
     const user = await this.userService.create(registerDTO);
@@ -29,6 +30,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @HttpCode(HttpStatus.OK)
   async login(@Body() loginDTO: LoginDTO) {
     const user = await this.userService.findByLogin(loginDTO);
     const payload = {
