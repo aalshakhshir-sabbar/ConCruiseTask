@@ -18,8 +18,8 @@ export class CustomerService {
     return await this.customerModel.find().exec();
   }
 
-  async getCustomer(id: number): Promise<Customer[]> {
-    return await this.customerModel.find({ _id: id });
+  async getCustomer(id: string): Promise<Customer[]> {
+    return await this.customerModel.findById(id);
   }
 
   async addCustomer(customer: CustomerDTO): Promise<Customer> {
@@ -32,9 +32,9 @@ export class CustomerService {
     await this.customerModel.findOneAndUpdate({ _id: id }, customer);
     return { success: true };
   }
-  async deleteCustomer(id: number) {
+  async deleteCustomer(id: string) {
     this.customerModel.deleteOne({ _id: id });
-    return { success: true }
+    return { success: true };
   }
   async deleteCustomers(req: any) {
     this.customerModel.deleteMany({
@@ -42,6 +42,6 @@ export class CustomerService {
         $in: req.ids,
       },
     });
-    return { success: true }
+    return { success: true };
   }
 }

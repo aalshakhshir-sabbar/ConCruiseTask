@@ -6,9 +6,6 @@ export type CustomerDocument = Customer & Document;
 @Schema()
 export class Customer {
   @Prop()
-  id: number;
-
-  @Prop()
   name: string;
 
   @Prop()
