@@ -4,32 +4,37 @@ import { INestApplication } from '@nestjs/common';
 import { failed, matches } from '../src/utils/mockData';
 import { AppModule } from '../src/app.module';
 
-describe('App', () => {
+describe('Authentication', () => {
   let app: INestApplication;
-  const appService = {};
-
+  const authService = {};
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     })
-      .overrideProvider(appService)
-      .useValue(appService)
+      .overrideProvider(authService)
+      .useValue(authService)
       .compile();
 
     app = moduleRef.createNestApplication();
     await app.init();
   });
 
-  it(`/GET match`, () => {
+  it(`/GET auth/register`, () => {
     return request(app.getHttpServer())
-      .get('/match')
-      .expect(200)
-      .expect(matches);
+      .post('/auth/register')
+      .send({
+        email: 'test2' + Math.random(),
+        password: 'test',
+      })
+      .expect(201);
   });
-  it(`/GET failed`, () => {
+  it(`/GET auth/login user in`, () => {
     return request(app.getHttpServer())
-      .get('/failed')
-      .expect(200)
-      .expect(failed);
+      .post('/auth/login')
+      .send({
+        email: 'test2',
+        password: 'test',
+      })
+      .expect(200);
   });
 });
