@@ -12,6 +12,6 @@ export class AuthService {
     return sign(payload, process.env.SECRET_KEY, { expiresIn: '7d' });
   }
   async validateUser(payload: Payload) {
-    return await this.userService.findByPayload(payload);
+    return await this.userService.findByEmail(payload);
   }
 }
