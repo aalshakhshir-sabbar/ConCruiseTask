@@ -14,14 +14,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiParam,
-  ApiQuery,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { CustomerDTO } from 'src/models/customer';
-import {  CustomerDocument } from 'src/schemas/customer.schema';
+import { CustomerDocument } from 'src/schemas/customer.schema';
 import { PaginationDTO } from 'src/types/paginationdto';
 import { ExceptionsLoggerFilter } from 'src/utils/exceptionLogger.filter';
 import { ParseObjectIdPipe } from 'src/utils/id.pipe';
@@ -46,15 +41,13 @@ export class CustomerController {
   @Get(':id')
   getCustomerById(
     @Param('id', ParseObjectIdPipe) id: string,
-  ): Promise<CustomerDTO> {
+  ): Promise<CustomerDocument> {
     return this.customerRepo.findOne(id);
   }
 
   @Post()
-  @ApiBody({ description: 'body:json string' })
   @HttpCode(HttpStatus.CREATED)
-  @Header('Cache-Control', 'none')
-  addCustomer(@Body() body: CustomerDocument): Promise<Object> {
+  addCustomer(@Body() body: CustomerDTO): Promise<Object> {
     return this.customerRepo.create(body);
   }
 
@@ -62,9 +55,8 @@ export class CustomerController {
   @Put(':id')
   @UseFilters(ExceptionsLoggerFilter)
   @HttpCode(HttpStatus.OK)
-  @Header('Cache-Control', 'none')
   editCustomer(
-    @Body() customer: CustomerDocument,
+    @Body() customer: CustomerDTO,
     @Param('id', ParseObjectIdPipe) id: string,
   ) {
     return this.customerRepo.update(id, customer);
@@ -73,15 +65,16 @@ export class CustomerController {
   @ApiParam({ name: 'id' })
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  @Header('Cache-Control', 'none')
   deleteCustomer(@Param('id', ParseObjectIdPipe) id: string) {
     return this.customerRepo.delete(id);
   }
 
-  @Post()
+  @Post('/delete')
   @HttpCode(HttpStatus.OK)
-  @Header('Cache-Control', 'none')
-  deleteCustomers(@Body() ids: any[]) {
+  @ApiBody({
+    description: 'ids to be deleted',
+  })
+  deleteCustomers(@Body() ids: string[]) {
     return this.customerRepo.deleteMany(ids);
   }
 }

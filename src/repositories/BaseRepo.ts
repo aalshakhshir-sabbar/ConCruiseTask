@@ -17,12 +17,12 @@ export abstract class BaseRepo<T> implements IWrite<T>, IRead<T> {
     return this.model.findById(id);
   }
 
-  async create(item: T): Promise<Object> {
+  async create(item: any): Promise<Object> {
     const entity = new this.model(item);
     entity.save();
     return { success: true };
   }
-  async update(id: string, item: T): Promise<Object> {
+  async update(id: string, item: any): Promise<Object> {
     this.model.findOneAndUpdate({ _id: id }, item);
     return { success: true };
   }
