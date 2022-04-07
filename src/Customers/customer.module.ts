@@ -5,6 +5,7 @@ import { CommandModule } from 'nestjs-command';
 import { AppService } from 'src/app.service';
 import { Customer, CustomerSchema } from 'src/schemas/customer.schema';
 import { CustomerController } from './customer.controller';
+import { CustomerRepo } from './customer.repo';
 import { CustomerService } from './customer.service';
 
 @Module({
@@ -16,6 +17,6 @@ import { CustomerService } from './customer.service';
     ]),
   ],
   controllers: [CustomerController],
-  providers: [CustomerService, AppService],
+  providers: [CustomerService, AppService, CustomerRepo],
 })
 export class CustomerModule {}
