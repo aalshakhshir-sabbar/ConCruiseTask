@@ -11,6 +11,6 @@ export class CustomerCommand {
     describe: 'get all customers',
   })
   async customers() {
-    return this.customerSerivce.getCustomers();
+    return this.customerSerivce.getCustomers({ page: 0, limit: 10 });
   }
 }

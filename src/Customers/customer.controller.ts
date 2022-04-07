@@ -9,15 +9,24 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseFilters,
   UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+  ApiPropertyOptional,
+  ApiQuery,
+} from '@nestjs/swagger';
+import { IsEmpty } from 'class-validator';
 import { CustomerDTO } from 'src/models/customer';
 import { Customer } from 'src/schemas/customer.schema';
+import { PaginationDTO } from 'src/types/paginationdto';
 import { ExceptionsLoggerFilter } from 'src/utils/exceptionLogger.filter';
 import { ParseObjectIdPipe } from 'src/utils/id.pipe';
 import { CustomerService } from './customer.service';
@@ -28,11 +37,13 @@ import { CustomerService } from './customer.service';
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
-
-
   @Get()
-  async getCustomers(): Promise<Customer[]> {
-    return await this.customerService.getCustomers();
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  async getCustomers(
+    @Query() paginationQuery: PaginationDTO,
+  ): Promise<Customer[]> {
+    return await this.customerService.getCustomers(paginationQuery);
   }
 
   @ApiParam({ name: 'id' })
@@ -51,8 +62,6 @@ export class CustomerController {
     return this.customerService.addCustomer(body);
   }
 
-
-  
   @ApiParam({ name: 'id' })
   @Put(':id')
   @UseFilters(ExceptionsLoggerFilter)

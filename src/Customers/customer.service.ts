@@ -4,6 +4,7 @@ import { AppService } from 'src/app.service';
 import { CustomerDTO } from 'src/models/customer';
 import { Customer, CustomerDocument } from 'src/schemas/customer.schema';
 import { Model } from 'mongoose';
+import { PaginationDTO } from 'src/types/paginationdto';
 
 @Injectable()
 export class CustomerService {
@@ -14,12 +15,17 @@ export class CustomerService {
   ) {
     this.customers = this.appService.getCustomers();
   }
-  async getCustomers(): Promise<Customer[]> {
-    return await this.customerModel.find().exec();
+  async getCustomers(
+    paginationQuery: PaginationDTO = { limit: 10, page: 0 },
+  ): Promise<Customer[]> {
+    return this.customerModel
+      .find()
+      .skip(paginationQuery.page * paginationQuery.limit)
+      .limit(paginationQuery.limit);
   }
 
   async getCustomer(id: string): Promise<Customer[]> {
-    return await this.customerModel.findById(id);
+    return this.customerModel.findById(id);
   }
 
   async addCustomer(customer: CustomerDTO): Promise<Customer> {

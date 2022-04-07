@@ -34,8 +34,10 @@ describe('CustomerController', () => {
   });
 
   describe('customer controller', () => {
-    it('should return all customers', () => {
-      expect(customerController.getCustomers()).toEqual(customers);
+    it('should return all customers in page one', () => {
+      expect(customerController.getCustomers({ limit: 10, page: 0 })).toEqual(
+        customers,
+      );
     });
     it('should get customer by id', async () => {
       expect(
