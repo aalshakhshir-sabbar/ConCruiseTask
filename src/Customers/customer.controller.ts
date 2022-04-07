@@ -71,10 +71,7 @@ export class CustomerController {
 
   @Post('/delete')
   @HttpCode(HttpStatus.OK)
-  @ApiBody({
-    description: 'ids to be deleted',
-  })
-  deleteCustomers(@Body() ids: string[]) {
+  deleteCustomers(@Body() ids: any[]) {
     return this.customerRepo.deleteMany(ids);
   }
 }
