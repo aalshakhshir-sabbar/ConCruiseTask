@@ -19,7 +19,7 @@ import { AuthModule } from './auth/auth.module';
     CommandModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      'mongodb://localhost:27017/?directConnection=true&serverSelectionTimeoutMS=2000',
+      process.env.DATABASE_URI,
     ),
     UserModule,
     AuthModule,

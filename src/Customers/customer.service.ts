@@ -1,53 +1,34 @@
 import { Body, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { AppService } from 'src/app.service';
 import { CustomerDTO } from 'src/models/customer';
 import { Customer, CustomerDocument } from 'src/schemas/customer.schema';
-import { Model } from 'mongoose';
 import { PaginationDTO } from 'src/types/paginationdto';
+import { CustomerRepo } from './customer.repo';
 
 @Injectable()
 export class CustomerService {
-  customers: any = this.appService.getCustomers();
-  constructor(
-    private readonly appService: AppService,
-    @InjectModel(Customer.name) private customerModel: Model<CustomerDocument>,
-  ) {
-    this.customers = this.appService.getCustomers();
-  }
-  async getCustomers(
+  constructor(private readonly customerRepo: CustomerRepo) {}
+  async find(
     paginationQuery: PaginationDTO = { limit: 10, page: 0 },
-  ): Promise<Customer[]> {
-    return this.customerModel
-      .find()
-      .skip(paginationQuery.page * paginationQuery.limit)
-      .limit(paginationQuery.limit);
+  ): Promise<CustomerDocument[]> {
+    return this.customerRepo.find(paginationQuery);
   }
 
-  async getCustomer(id: string): Promise<Customer[]> {
-    return this.customerModel.findById(id);
+  async findOne(id: string): Promise<Object> {
+    return this.customerRepo.findOne(id);
   }
 
-  async addCustomer(customer: CustomerDTO): Promise<Customer> {
-    const createdCustomer = new this.customerModel(customer);
-    createdCustomer.save();
-    return createdCustomer;
+  async create(customer: CustomerDTO): Promise<Object> {
+    return this.customerRepo.create(customer);
   }
 
-  async editCustomer(@Body() customer: CustomerDTO, id: string) {
-    await this.customerModel.findOneAndUpdate({ _id: id }, customer);
-    return { success: true };
+  async update(@Body() customer: CustomerDTO, id: string) {
+    return this.customerRepo.update(id, customer);
   }
-  async deleteCustomer(id: string) {
-    this.customerModel.deleteOne({ _id: id });
-    return { success: true };
+  async deleteOne(id: string) {
+    return this.customerRepo.delete(id);
   }
-  async deleteCustomers(req: any) {
-    this.customerModel.deleteMany({
-      _id: {
-        $in: req.ids,
-      },
-    });
+  async deleteMany(ids: string[]) {
+    this.customerRepo.deleteMany(ids);
     return { success: true };
   }
 }
