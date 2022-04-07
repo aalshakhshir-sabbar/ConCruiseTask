@@ -71,9 +71,7 @@ describe('Customers', () => {
         rating: 20,
       })
       .expect(201)
-      .then((res) => {
-        expect(res.body.name).toContain('Abood');
-      });
+      .expect({ success: true });
   });
   afterAll(() => {
     app.close();
