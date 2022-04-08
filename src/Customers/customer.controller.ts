@@ -6,12 +6,15 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Put,
   Query,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs'
+
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { CustomerDTO } from 'src/models/customer';
@@ -19,13 +22,14 @@ import { CustomerDocument } from 'src/schemas/customer.schema';
 import { PaginationDTO } from 'src/types/paginationdto';
 import { ExceptionsLoggerFilter } from 'src/utils/exceptionLogger.filter';
 import { ParseObjectIdPipe } from 'src/utils/id.pipe';
+import { DeleteCustomerCommand } from './customer.command';
 import { CustomerService } from './customer.service';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
 @Controller('customers')
 export class CustomerController {
-  constructor(private readonly customerService: CustomerService) {}
+  constructor(private readonly customerService: CustomerService, private readonly commandBus: CommandBus) {}
 
   @Get()
   @ApiQuery({ name: 'page', required: false })
@@ -63,10 +67,11 @@ export class CustomerController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   deleteCustomer(@Param('id', ParseObjectIdPipe) id: string) {
+    this.commandBus.execute(new DeleteCustomerCommand(id));
     return this.customerService.deleteOne(id);
   }
 
-  @Post('/delete')
+  @Patch('/delete')
   @HttpCode(HttpStatus.OK)
   deleteCustomers(@Body() ids: any[]) {
     return this.customerService.deleteMany(ids);

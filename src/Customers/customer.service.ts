@@ -1,12 +1,18 @@
 import { Body, Injectable } from '@nestjs/common';
 import { CustomerDTO } from 'src/models/customer';
-import { Customer, CustomerDocument } from 'src/schemas/customer.schema';
+import { EventBus } from '@nestjs/cqrs';
+
+import { CustomerDocument } from 'src/schemas/customer.schema';
 import { PaginationDTO } from 'src/types/paginationdto';
 import { CustomerRepo } from './customer.repo';
+import { DeletedCustomerEvent } from './delete-customer.event';
 
 @Injectable()
 export class CustomerService {
-  constructor(private readonly customerRepo: CustomerRepo) {}
+  constructor(
+    private readonly customerRepo: CustomerRepo,
+    private eventBus: EventBus,
+  ) {}
   async find(
     paginationQuery: PaginationDTO = { limit: 10, page: 0 },
   ): Promise<CustomerDocument[]> {
@@ -25,10 +31,12 @@ export class CustomerService {
     return this.customerRepo.update(id, customer);
   }
   async deleteOne(id: string) {
+    this.eventBus.publish(new DeletedCustomerEvent(id))
     return this.customerRepo.delete(id);
   }
   async deleteMany(ids: string[]) {
     this.customerRepo.deleteMany(ids);
     return { success: true };
   }
+
 }

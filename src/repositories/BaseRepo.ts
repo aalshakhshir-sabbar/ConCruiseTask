@@ -27,8 +27,7 @@ export abstract class BaseRepo<T> implements IWrite<T>, IRead<T> {
     return { success: true };
   }
   async delete(id: string): Promise<Object> {
-    this.model.deleteOne({ _id: id });
-    return { success: true };
+    return this.model.deleteOne({ _id: id });
   }
   async deleteMany(ids: string[]): Promise<Object> {
     this.model.deleteMany({
