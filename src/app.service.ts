@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import * as sqs from 'aws-sdk/clients/sqs';
+import AWS from 'aws-sdk'
+
 import { CsvParser } from 'nest-csv-parser';
-const fs = require('fs')
+const fs = require('fs');
 import { IRide, Pointed } from './models/ride';
 import { SortTrips } from './utils/SortingMechanismPoints';
 
@@ -9,7 +12,13 @@ const customersDummy = './db/dummy/customersdummy.csv';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly csvParser: CsvParser) {}
+  private readonly awsSqs;
+  constructor(private readonly csvParser: CsvParser) {
+    this.awsSqs = new sqs({
+      endpoint: process.env.LOCALSTACK_URL,
+      region: 'us-east-1',
+    });
+  }
 
   async parse(): Promise<Pointed[]> {
     const drivers: any = await this.getDrivers();

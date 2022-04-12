@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { AggregateRoot } from '@nestjs/cqrs';
-import { DeletedCustomerEvent } from 'src/Customers/delete-customer.event';
+import { DeletedCustomerEvent } from 'src/Customers/events/delete-customer.event';
+import { CreateCustomerEvent } from 'src/Customers/events/create-customer.event';
 
 export type CustomerDocument = Customer & Document;
 
@@ -27,6 +28,9 @@ export class Customer extends AggregateRoot {
 
   deleteCustomer() {
     this.apply(new DeletedCustomerEvent(this.id));
+  }
+  createCustomer(){
+    this.apply(new CreateCustomerEvent(this.id))
   }
 }
 

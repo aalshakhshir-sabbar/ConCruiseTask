@@ -22,7 +22,7 @@ import { CustomerDocument } from 'src/schemas/customer.schema';
 import { PaginationDTO } from 'src/types/paginationdto';
 import { ExceptionsLoggerFilter } from 'src/utils/exceptionLogger.filter';
 import { ParseObjectIdPipe } from 'src/utils/id.pipe';
-import { DeleteCustomerCommand } from './customer.command';
+import { DeleteCustomerCommand } from './commands/delete-customer.command';
 import { CustomerService } from './customer.service';
 
 @ApiBearerAuth()

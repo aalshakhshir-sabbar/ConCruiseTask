@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { Customer } from 'src/schemas/customer.schema';
-import { DeleteCustomerCommand } from './customer.command';
+import { DeleteCustomerCommand } from './delete-customer.command';
 
 @CommandHandler(DeleteCustomerCommand)
 export class DeleteCustomerHandler

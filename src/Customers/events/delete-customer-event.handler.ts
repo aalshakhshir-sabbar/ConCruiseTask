@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs'
+import { QueueHandler } from 'src/utils/sqs-decorator';
 import { DeletedCustomerEvent } from './delete-customer.event';
 
 @EventsHandler(DeletedCustomerEvent)
@@ -8,7 +9,7 @@ export class DeletedCustomerEventHandler implements IEventHandler<DeletedCustome
   constructor() {
 
   }
-    
+  @QueueHandler('delete_user')  
   async handle(event: DeletedCustomerEvent) {
       console.log("DELETED", event);
   }
