@@ -6,7 +6,6 @@ import { CustomerDocument } from 'src/schemas/customer.schema';
 import { PaginationDTO } from 'src/types/paginationdto';
 import { CustomerRepo } from './customer.repo';
 import { DeletedCustomerEvent } from './events/delete-customer.event';
-import { SqsService } from '@ssut/nestjs-sqs';
 import { SnsService } from 'src/aws/sns.service';
 import { CreateCustomerEvent } from './events/create-customer.event';
 
@@ -15,7 +14,6 @@ export class CustomerService {
   constructor(
     private readonly customerRepo: CustomerRepo,
     private snsSerivce: SnsService,
-    private readonly sqsService: SqsService,
   ) {}
   async find(
     paginationQuery: PaginationDTO = { limit: 10, page: 0 },
@@ -28,10 +26,7 @@ export class CustomerService {
   }
 
   async create(customer: CustomerDTO): Promise<Object> {
-    this.sqsService.send('create_customer', {
-      body: 'test',
-      id: customer.name
-    })
+    this.snsSerivce.publish('create_customer', new CreateCustomerEvent('test'))
     return this.customerRepo.create(customer);
   }
 

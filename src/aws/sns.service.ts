@@ -60,7 +60,6 @@ export class SnsService {
       (s) => s.Endpoint === Endpoint,
     );
 
-    console.log(subscription)
 
     if (subscription && Attributes) {
       return this.awsSns
