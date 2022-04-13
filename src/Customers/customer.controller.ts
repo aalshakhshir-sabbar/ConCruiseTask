@@ -22,6 +22,7 @@ import { CustomerDocument } from 'src/schemas/customer.schema';
 import { PaginationDTO } from 'src/types/paginationdto';
 import { ExceptionsLoggerFilter } from 'src/utils/exceptionLogger.filter';
 import { ParseObjectIdPipe } from 'src/utils/id.pipe';
+import { CreateCustomerCommand } from './commands/create-customer.command';
 import { DeleteCustomerCommand } from './commands/delete-customer.command';
 import { CustomerService } from './customer.service';
 
@@ -48,7 +49,8 @@ export class CustomerController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  addCustomer(@Body() body: CustomerDTO): Promise<Object> {
+  addCustomer(@Body() body: CustomerDTO) {
+    this.commandBus.execute(new CreateCustomerCommand(body.name));
     return this.customerService.create(body);
   }
 

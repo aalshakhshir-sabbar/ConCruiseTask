@@ -25,7 +25,7 @@ export class CustomerService {
     return this.customerRepo.findOne(id);
   }
 
-  async create(customer: CustomerDTO): Promise<Object> {
+  async create(customer: CustomerDTO) {
     this.snsSerivce.publish('create_customer', new CreateCustomerEvent('test'))
     return this.customerRepo.create(customer);
   }

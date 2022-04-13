@@ -1,20 +1,19 @@
 import { Injectable } from '@nestjs/common';
 const AWS = require('aws-sdk');
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class SnsService {
   private readonly awsSns;
 
-  constructor(private configService: ConfigService) {
+  constructor() {
     this.awsSns = new AWS.SNS({
       endpoint: process.env.LOCALSTACK_URL,
       accessKeyId: process.env.AWS_ACCOUNT_ID,
       secretAccessKey: process.env.AWS_ACCOUNT_ID,
       region: process.env.AWS_REGION,
     });
-    this.createSqsSubscription('customer', 'customer')
-    this.createSqsSubscription('create_customer', 'create_customer')
+    this.createSqsSubscription('customer', 'customer');
+    this.createSqsSubscription('create_customer', 'create_customer');
   }
 
   publish(topic: string, event: any) {
@@ -43,6 +42,8 @@ export class SnsService {
     queue: string,
     filterPolicy?: any,
   ) {
+    await this.createTopic('customer');
+    await this.createTopic('create_customer');
     const region = process.env.AWS_REGION;
     const accountId = process.env.AWS_ACCOUNT_ID;
     const TopicArn = `arn:aws:sns:${region}:${accountId}:${topic}`;
@@ -59,7 +60,6 @@ export class SnsService {
     const subscription = await subscriptions.Subscriptions.find(
       (s) => s.Endpoint === Endpoint,
     );
-
 
     if (subscription && Attributes) {
       return this.awsSns
