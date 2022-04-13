@@ -11,12 +11,14 @@ import { ExceptionsLoggerFilter } from './utils/exceptionLogger.filter';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { AwsModule } from './aws/aws.module';
 
 @Module({
   imports: [
     CustomerModule,
     CsvModule,
     CommandModule,
+    AwsModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
       process.env.DATABASE_URI,

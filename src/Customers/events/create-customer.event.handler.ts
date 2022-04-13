@@ -9,7 +9,7 @@ export class CreateCustomerEventHandler implements IEventHandler<CreateCustomerE
   constructor() {
 
   }
-  @QueueHandler('create_customer')  
+  @QueueHandler('create_customer')
   async handle(event: CreateCustomerEvent) {
       console.log("created", event);
   }

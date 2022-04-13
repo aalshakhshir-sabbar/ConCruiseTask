@@ -15,6 +15,9 @@ import { SqsModule } from '@ssut/nestjs-sqs';
 import { CreateCustomerCommandHandler } from './commands/create-customer.command.handler';
 import { CreateCustomerEventHandler } from './events/create-customer.event.handler';
 import { getQueues } from 'src/main';
+import { SnsService } from 'src/aws/sns.service';
+import { ConfigService } from '@nestjs/config';
+import { CreateCustomerEvent } from './events/create-customer.event';
 
 export const CommandHandlers = [
   DeleteCustomerHandler,
@@ -24,6 +27,7 @@ export const EventHandlers = [
   DeletedCustomerEvent,
   DeletedCustomerEventHandler,
   CreateCustomerEventHandler,
+  CreateCustomerEvent,
 ];
 
 @Module({
@@ -32,15 +36,6 @@ export const EventHandlers = [
       useFactory: () => {
         return {
           consumers: [
-            {
-              name: 'delete_user',
-              queueUrl: 'http://localhost:4566/000000000000/delete_user',
-            },
-            {
-              name: 'create_customer',
-              queueUrl: 'http://localhost:4566/000000000000/create_customer',
-              
-            },
           ],
           producers: getQueues(),
         };
@@ -58,6 +53,8 @@ export const EventHandlers = [
     CustomerService,
     AppService,
     CustomerRepo,
+    SnsService,
+    ConfigService,
     ...CommandHandlers,
     ...EventHandlers,
   ],

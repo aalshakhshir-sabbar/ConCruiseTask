@@ -9,7 +9,7 @@ export class DeletedCustomerEventHandler implements IEventHandler<DeletedCustome
   constructor() {
 
   }
-  @QueueHandler('delete_user')  
+  @QueueHandler('customer')  
   async handle(event: DeletedCustomerEvent) {
       console.log("DELETED", event);
   }

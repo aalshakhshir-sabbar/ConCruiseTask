@@ -7,12 +7,14 @@ import { PaginationDTO } from 'src/types/paginationdto';
 import { CustomerRepo } from './customer.repo';
 import { DeletedCustomerEvent } from './events/delete-customer.event';
 import { SqsService } from '@ssut/nestjs-sqs';
+import { SnsService } from 'src/aws/sns.service';
+import { CreateCustomerEvent } from './events/create-customer.event';
 
 @Injectable()
 export class CustomerService {
   constructor(
     private readonly customerRepo: CustomerRepo,
-    private eventBus: EventBus,
+    private snsSerivce: SnsService,
     private readonly sqsService: SqsService,
   ) {}
   async find(
@@ -26,14 +28,10 @@ export class CustomerService {
   }
 
   async create(customer: CustomerDTO): Promise<Object> {
-    
-    await this.sqsService.send('create_customer', {
-      id: customer.name,
-      delaySeconds: 0,
-      body: {
-        name: customer.name
-      },
-    });
+    this.sqsService.send('create_customer', {
+      body: 'test',
+      id: customer.name
+    })
     return this.customerRepo.create(customer);
   }
 
@@ -41,14 +39,7 @@ export class CustomerService {
     return this.customerRepo.update(id, customer);
   }
   async deleteOne(id: string) {
-    this.eventBus.publish(new DeletedCustomerEvent(id));
-    await this.sqsService.send('delete_user', {
-      id: id.toString(),
-      delaySeconds: 0,
-      body: {
-        id: id.toString()
-      },
-    });
+    this.snsSerivce.publish('customer', new DeletedCustomerEvent(id));
     return this.customerRepo.delete(id);
   }
   async deleteMany(ids: string[]) {
